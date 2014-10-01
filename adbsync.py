@@ -61,8 +61,9 @@ class FileInfo(object):
                      self.timestamp,
                      self.name))) + ')'
 
-def ListAndroidDir(dir):
-  for line in subprocess.check_output(['adb', 'shell', 'ls', '-la', dir]).split('\r\n'):
+def ListAndroidDir(dir, device=None):
+  adb_prefix = ['adb'] + (['-s', device] if device else [])
+  for line in subprocess.check_output(adb_prefix + ['shell', 'ls', '-la', dir]).split('\r\n'):
     if line:
       m = LS_LINE_REGEX.match(line)
       yield FileInfo(*m.groups())
@@ -83,9 +84,9 @@ def main():
 
   # For now, source must be Android, dest must not.
   # TODO: let src have a device identifier
-  assert src.startswith(':')
+  assert ':' in src
+  src_device, src = src.split(":", 1)
   assert ':' not in dest
-  src = src[1:]
 
   # For now, source must be a directory, as must dest.
   assert src.endswith('/')
@@ -95,7 +96,8 @@ def main():
     mkdir_p(dest)
   file_count = 0
   copied_count = 0
-  for file in ListAndroidDir(src):
+  adb_prefix = ['adb'] + (['-s', src_device] if src_device else [])
+  for file in ListAndroidDir(src, src_device):
     file_count += 1
     out_fnam = os.path.join(dest, file.name)
     try:
@@ -110,7 +112,7 @@ def main():
           stat = None
     if stat is None:
       print file.name + '...'
-      pull_cmd = ['adb', 'pull', os.path.join(src, file.name), out_fnam]
+      pull_cmd = adb_prefix + ['pull', os.path.join(src, file.name), out_fnam]
       copied_count += 1
       if not dry_run:
         subprocess.check_call(pull_cmd)
