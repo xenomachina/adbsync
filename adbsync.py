@@ -46,7 +46,7 @@ LS_LINE_REGEX = re.compile(r'(..........)\s+(\w+)\s+(\w+)\s+(\d+)\s+(\d\d\d\d-\d
 class FileInfo(object):
   def __init__(self, perms, user, group, size, timestamp, name):
     self.perms = perms
-    assert perms == '-rw-rw-r--'
+    assert perms[1] == 'r'
     self.user = user
     self.group = group
     self.size = int(size)
