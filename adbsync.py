@@ -83,7 +83,6 @@ def main():
   dry_run = args.dry_run
 
   # For now, source must be Android, dest must not.
-  # TODO: let src have a device identifier
   assert ':' in src
   src_device, src = src.split(":", 1)
   assert ':' not in dest
