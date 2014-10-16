@@ -13,6 +13,13 @@ are different. It also preserves last-modified times, though note that
 for now it is only able to retrieve the last-modified time with 1 minute
 resolution.
 
+Syntax is:
+
+python adbsync.py [device]:/path/to/src /path/to/target
+
+where device is the device id as listed by adb devices. This is optional
+but allows distinguishing between multiple simultaneously attached devices
+
 TODO list:
 
 - add -v and --progress flags
