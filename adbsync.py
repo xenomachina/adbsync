@@ -7,7 +7,7 @@ Syncs files between an Android device and your computer.
 Like rsync, expects source and destination to be of the form THING:PATH,
 or just PATH  for the local filesystem. The difference is that adbsync
 expects an Android device identifier instead of a hostnam for "THING".
-Leave in the coon, but leave out "THING" if you want the defaut device.
+Leave in the colon, but leave out "THING" if you want the defaut device.
 (And actually, right now only the default device works.)
 """
 
